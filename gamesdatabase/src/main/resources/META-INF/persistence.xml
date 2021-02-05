@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <persistence-unit name="gamesdatabase">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.fdmgroup.gamesdatabase.model.User</class>
+
+        <properties>
+            <!-- <property name="javax.persistence.jdbc.driver"
+                value="h2.jdbc.driver.h2Driver" /> -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:h2:tcp://localhost:9092//C:\Users\Stephan\Documents\H2Database\gamesdatabase" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <!-- create | drop " drop-and-create | none -->
+            <property
+                    name="javax.persistence.schema-generation.database.action"
+                    value="drop-and-create" />
+            <!-- Load sample data -->
+            <property name="javax.persistence.sql-load-script-source"
+                      value="/sql/import.sql" />
+            <!-- Hibernate Specific -->
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format.sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+        </properties>
+
+    </persistence-unit>
+</persistence>
