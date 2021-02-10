@@ -15,7 +15,7 @@ public class Game {
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "developerId")
+    @JoinColumn(name = "FK_DEV_ID")
     private Developer developer;
 
     public Game(String name, Developer developer) {

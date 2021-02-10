@@ -1,17 +1,20 @@
-package com.fdmgroup.project_gamesdatabase;
+package com.fdmgroup.project_gamesdatabase.gamedetailtests;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.service.DeveloperService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DeveloperTest {
 
     @Autowired
@@ -31,22 +34,20 @@ public class DeveloperTest {
     void DeveloperCanBeCreated(){
         Developer developer1 = new Developer("Riot Games", "LA, California, USA");
         developerService.create(developer1);
-        assertNotNull(developer1.getId() > 0);
+        assertTrue(developer1.getId() > 0);
     }
 
     @Test
     void DeveloperCanBeRetrievedFromDatabase_UsingId() {
-        Developer developer1 = new Developer("Riot Games", "LA, California, USA");
-        developerService.create(developer1);
-        Developer retrievedDeveloper = developerService.retrieve(3).get();
-        assertEquals(retrievedDeveloper.getName(), developer1.getName());
+        Developer retrievedDeveloper = developerService.retrieve(1).get();
+        assertTrue(retrievedDeveloper.getId() == 1);
     }
 
     @Test
     void DeveloperCanBeUpdatedInDatabase() {
         Developer developerFromDb = developerService.retrieve(1).get();
         String nameBeforeUpdate = developerFromDb.getName();
-        developerFromDb.setName("Fox Dev");
+        developerFromDb.setName("changedname");
         developerService.update(developerFromDb);
         Developer updatedDeveloper = developerService.retrieve(1).get();
         String nameAfterUpdate = updatedDeveloper.getName();

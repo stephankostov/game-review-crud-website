@@ -1,4 +1,4 @@
-package com.fdmgroup.project_gamesdatabase;
+package com.fdmgroup.project_gamesdatabase.gamedetailtests;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.model.Game;
@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GameTest {
 
     @Autowired
@@ -29,8 +31,6 @@ public class GameTest {
         Developer developer2 = new Developer("CD Projekt Red", "Warsaw, Poland");
         game2 = new Game("Witcher 3", developer2);
         gameService.create(game2);
-        System.err.println(game2.getId());
-        System.err.println(gameService.retrieveAll());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class GameTest {
     }
 
     @Test
-    void GameCanBeRetrievedFromDatabase_UsingId() {
+    void GameCanBeRetrieved_UsingId() {
         assertTrue(gameService.retrieve(1).isPresent());
     }
 
@@ -56,7 +56,7 @@ public class GameTest {
     void GameCanBeUpdatedInDatabase() {
         Game gameFromDb = gameService.retrieve(1).get();
         String nameBeforeUpdate = gameFromDb.getName();
-        gameFromDb.setName("Updated Name");
+        gameFromDb.setName("updatedname");
         gameService.update(gameFromDb);
         Game updatedGame = gameService.retrieve(1).get();
         String nameAfterUpdate = updatedGame.getName();

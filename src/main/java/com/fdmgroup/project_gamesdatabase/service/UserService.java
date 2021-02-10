@@ -54,4 +54,7 @@ public class UserService {
     }
 
 
+    public Optional<User> getByUsernameAndPassword(String username, String password) {
+        return userDao.getByUsernameAndPassword(username, password);
+    }
 }
