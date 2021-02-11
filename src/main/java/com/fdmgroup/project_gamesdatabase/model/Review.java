@@ -12,12 +12,12 @@ public class Review {
     private long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "FK_USER_ID")
-    private User user;
+    @JoinColumn(name = "gameId")
+    private Game game;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "FK_GAME_ID")
-    private Game game;
+    @JoinColumn(name = "userId")
+    private User user;
 
     @Column
     private int rating;
@@ -25,9 +25,9 @@ public class Review {
     @Column
     private String review;
 
-    public Review(User user, Game game, int rating, String review) {
-        this.user = user;
+    public Review(Game game, User user, int rating, String review) {
         this.game = game;
+        this.user = user;
         this.rating = rating;
         this.review = review;
     }

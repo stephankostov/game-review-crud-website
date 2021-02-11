@@ -14,8 +14,8 @@ public class Game {
     @Column
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "FK_DEV_ID")
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "developerId")
     private Developer developer;
 
     public Game(String name, Developer developer) {

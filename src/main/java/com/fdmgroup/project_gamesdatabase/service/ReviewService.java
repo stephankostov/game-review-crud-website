@@ -1,8 +1,10 @@
 package com.fdmgroup.project_gamesdatabase.service;
 
+import com.fdmgroup.project_gamesdatabase.model.Game;
 import com.fdmgroup.project_gamesdatabase.model.Review;
 import com.fdmgroup.project_gamesdatabase.repository.ReviewDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,10 @@ public class ReviewService {
     public boolean delete(long reviewId) {
         reviewDao.deleteById(reviewId);
         return true;
+    }
+
+    public double getAverageGameRating(Game game){
+        return reviewDao.getAverageGameRating(game);
     }
 
 }
