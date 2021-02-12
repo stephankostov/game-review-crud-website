@@ -25,20 +25,19 @@ public class GameTest {
 
     @BeforeEach
     void setup() {
-        Developer developer1 = new Developer("Toby Fox", "Massachuesets, USA");
-        game1 = new Game("Undertale", developer1);
+        Developer developer = new Developer("Riot Games", "California, USA");
+        game1 = new Game("League of Legends", developer);
+        game2 = new Game("Valorant", developer);
         gameService.create(game1);
-        Developer developer2 = new Developer("CD Projekt Red", "Warsaw, Poland");
-        game2 = new Game("Witcher 3", developer2);
         gameService.create(game2);
     }
 
     @Test
     void GameCanBeCreated() {
-        Developer developer1 = new Developer("CD Projekt Red", "Warsaw, Poland");
-        Game game1 = new Game("Witcher 3", developer1);
-        gameService.create(game1);
-        assertTrue(game1.getGameId() > 0);
+        Developer developer = new Developer("CD Projekt Red", "Warsaw, Poland");
+        Game game = new Game("Witcher 3", developer);
+        gameService.create(game);
+        assertTrue(game.getGameId() > 0);
     }
 
     @Test

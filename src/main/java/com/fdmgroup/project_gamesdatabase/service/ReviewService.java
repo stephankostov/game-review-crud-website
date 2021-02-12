@@ -32,16 +32,7 @@ public class ReviewService {
         reviewDao.save(review);
     }
 
-    /*
-    public void create(Review review) {
-        User user = review.getUser();
-        Game game = review.getGame();
-        Optional<Review> reviewInDb = reviewDao.getByUserAndGame(user, game);
-        if (reviewInDb.isPresent()) {
-            reviewDao.delete(reviewInDb.get());
-        }
-        reviewDao.save(review);
-    } */
+
 
     public Optional<Review> retrieve(long reviewId) {
         return reviewDao.findById(reviewId);

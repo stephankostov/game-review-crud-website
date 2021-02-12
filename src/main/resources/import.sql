@@ -12,8 +12,10 @@ insert into Game (game_id, name, developer_id) values (GAME_SEQ.nextval, 'Minecr
 insert into Game (game_id, name, developer_id) values (GAME_SEQ.nextval, 'Witcher 3', 3);
 insert into Game (game_id, name, developer_id) values (GAME_SEQ.nextval, 'Undertale', 4);
 
-insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 1, 1, 1, 'trash');
 insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 1, 2, 4, 'good old fashioned fun');
 insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 1, 3, 5, 'best game EVER');
+insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 3, 1, 5, 'gr8');
+insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 2, 3, 5, 'review..');
+insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 4, 3, 3, 'review');
 
 

@@ -25,7 +25,7 @@ public class ImportSqlTest {
     }
 
     @Test
-    void ImportClassWithRelationships() {
+    void ImportClassWithEntityRelationships() {
         Game gameFromDb = gameService.retrieve(1).get();
         assertEquals(gameFromDb.getGameId(), 1);
     }
