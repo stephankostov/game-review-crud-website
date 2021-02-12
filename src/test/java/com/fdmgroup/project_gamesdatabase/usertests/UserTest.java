@@ -67,7 +67,7 @@ public class UserTest {
 
     @Test
     void UserCanBeDeleted() {
-        User userToDelete = userService.retrieve(2).get();
+        User userToDelete = userService.retrieve(3).get();
         long userId = userToDelete.getId();
         int numInDbBefore = userService.retrieveAll().size();
         userService.delete(userId);
@@ -83,4 +83,7 @@ public class UserTest {
         int sizeAfterAdding = userService.retrieveAll().size();
         assertEquals(sizeBeforeAdding, sizeAfterAdding);
     }
+
+
+
 }

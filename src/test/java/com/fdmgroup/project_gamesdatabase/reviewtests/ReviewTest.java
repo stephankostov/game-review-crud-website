@@ -4,10 +4,8 @@ import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.model.Game;
 import com.fdmgroup.project_gamesdatabase.model.Review;
 import com.fdmgroup.project_gamesdatabase.model.User;
-import com.fdmgroup.project_gamesdatabase.service.GameService;
 import com.fdmgroup.project_gamesdatabase.service.ReviewService;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.transaction.Transactional;
-import java.beans.Transient;
-import java.util.List;
 
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ReviewTest {
 
     @Autowired
@@ -30,11 +31,14 @@ public class ReviewTest {
 
     @BeforeEach
     void setup() {
-        Game gameMock = mock(Game.class);
+        Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
+        Game game = new Game("Undertale", developer);
         User user1 = new User("steph", "steph179@gmail.com", "pwrd");
-        Review review1 = new Review(gameMock, user1, 5, "rly good :^)");
+        User user2 = new User("chris", "drysale@gmail.com", "pwrd");
+        Review review1 = new Review(game, user1, 5, "rly good :^)");
+        Review review2 = new Review(game, user2, 5, "great!!!!!");
         reviewService.create(review1);
-        System.err.println(reviewService.retrieveAll());
+        reviewService.create(review2);
     }
 
     @Test
@@ -46,15 +50,36 @@ public class ReviewTest {
         assertTrue(review.getId() > 0);
     }
 
+    @Test
+    void ReviewCanBeRetrievedFromDatabase_UsingId() {
+        Review reviewFromDb = reviewService.retrieve(2).get();
+        assertTrue(reviewFromDb.getId() == 2);
+    }
 
+    /*
+    @Test ReviewCanBeRetrievedFromDatabase_UsingUserAndGameId() {
+        User user = new User("steph", "steph179@gmail.com", "pwrd");
+        Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
+        Game game = new Game("Undertale", developer);
+        Review review1 = new Review(game, user, 3, "review...");
+        reviewService.create(review1);
+        Review reviewFromDb = reviewService.retrieve(user, game).get();
+        assertTrue(reviewFromDb.getId() > 0);
+    } */
+
+    @Test
+    void AListOfReviewsCanBeRetrieved() {
+        List<Review> allReviews = reviewService.retrieveAll();
+        assertTrue(allReviews.size() > 0);
+    }
 
     @Test
     @Transactional
     void GetAverageRating_ByGameId() {
         Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
+        Game game = new Game("Undertale", developer);
         User user1 = new User("steph", "steph179@gmail.com", "pwrd");
         User user2 = new User("chris", "drysale@gmail.com", "pwrd");
-        Game game = new Game("Undertale", developer);
         Review review1 = new Review(game, user1, 5, "rly good :^)");
         Review review2 = new Review(game, user2, 5, "great!!!!!");
         reviewService.create(review1);
@@ -62,4 +87,28 @@ public class ReviewTest {
         double gameRating = reviewService.getAverageGameRating(game);
         assertTrue(gameRating == (review1.getRating()+review2.getRating())/2);
     }
+
+    @Test
+    void ReviewCanBeDeleted() {
+        Review reviewToDelete = reviewService.retrieve(3).get();
+        long reviewId = reviewToDelete.getId();
+        int numInDbBefore = reviewService.retrieveAll().size();
+        reviewService.delete(reviewId);
+        int numInDbAfter = reviewService.retrieveAll().size();
+        assertNotEquals(numInDbBefore, numInDbAfter);
+    }
+
+    @Test
+    void RepeatedReviewsReplacePreviousReviewsInDatabase() {
+        Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
+        Game game = new Game("Undertale", developer);
+        User user = new User("steph2", "steph2@gmail.com", "pwrd");
+        Review originalReview = new Review(game, user, 3, "review...");
+        reviewService.create(originalReview);
+        long originalReviewId = originalReview.getId();
+        Review updatedReview = new Review(game, user, 5, "review...");
+        reviewService.create(updatedReview);
+        assertTrue(reviewService.retrieve(originalReviewId).isEmpty());
+    }
+
 }

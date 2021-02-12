@@ -2,6 +2,7 @@ package com.fdmgroup.project_gamesdatabase.service;
 
 import com.fdmgroup.project_gamesdatabase.model.Game;
 import com.fdmgroup.project_gamesdatabase.model.Review;
+import com.fdmgroup.project_gamesdatabase.model.User;
 import com.fdmgroup.project_gamesdatabase.repository.ReviewDao;
 
 import java.util.HashMap;
@@ -26,7 +27,9 @@ public class ReviewService {
     }
 
     public void create(Review review) {
-        reviewDao.save(review);
+        Game game = review.getGame();
+        User user = review.getUser();
+
     }
 
     public Optional<Review> retrieve(long reviewId) {
@@ -50,8 +53,18 @@ public class ReviewService {
         return true;
     }
 
-    public double getAverageGameRating(Game game){
+    /*
+    public Optional<Double> getAverageGameRating(Game game){
         return reviewDao.getAverageGameRating(game);
+    } */
+
+    public double getAverageGameRating(Game game){
+        Optional<Double> avgRating = reviewDao.getAverageGameRating(game);
+        if (avgRating.isPresent()) {
+            return avgRating.get();
+        } else {
+            return 0;
+        }
     }
 
 }

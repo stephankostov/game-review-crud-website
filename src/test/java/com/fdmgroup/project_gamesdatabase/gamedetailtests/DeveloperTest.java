@@ -62,7 +62,7 @@ public class DeveloperTest {
 
     @Test
     void DeveloperCanBeDeleted() {
-        Developer developerToDelete = developerService.retrieve(1).get();
+        Developer developerToDelete = developerService.retrieve(3).get();
         long developerId = developerToDelete.getId();
         int numInDbBefore = developerService.retrieveAll().size();
         developerService.delete(developerId);

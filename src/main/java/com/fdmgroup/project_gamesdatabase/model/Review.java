@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "userId"}))
 public class Review {
 
     @Id
@@ -33,7 +34,6 @@ public class Review {
     }
 
     public Review() {
-
     }
 
     public long getId() {

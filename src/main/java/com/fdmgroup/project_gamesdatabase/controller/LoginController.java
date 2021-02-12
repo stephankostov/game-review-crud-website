@@ -30,7 +30,7 @@ public class LoginController {
             ModelAndView modelAndView) {
         User userFromDb = userService.getByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
         if (userFromDb == null){
-            LOGGER.info("No such user in database");
+            LOGGER.info("Incorrect username and password combination");
             modelAndView.addObject("message", "incorrect username and or password");
             modelAndView.setViewName("login.jsp");
             return modelAndView;
