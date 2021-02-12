@@ -9,12 +9,12 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_gen")
     @SequenceGenerator(name = "game_gen", sequenceName = "GAME_SEQ", allocationSize = 1)
-    private long id;
+    private long gameId;
 
     @Column
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "developerId")
     private Developer developer;
 
@@ -26,12 +26,12 @@ public class Game {
     public Game() {
     }
 
-    public long getId() {
-        return id;
+    public long getGameId() {
+        return gameId;
     }
 
-    public void setId(long gameId) {
-        this.id = gameId;
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 
     public String getName() {
@@ -55,18 +55,18 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return id == game.id && name.equals(game.name) && developer.equals(game.developer);
+        return gameId == game.gameId && name.equals(game.name) && developer.equals(game.developer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, developer);
+        return Objects.hash(gameId, name, developer);
     }
 
     @Override
     public String toString() {
         return "Game{" +
-                "id=" + id +
+                "id=" + gameId +
                 ", name='" + name + '\'' +
                 ", developer=" + developer +
                 '}';

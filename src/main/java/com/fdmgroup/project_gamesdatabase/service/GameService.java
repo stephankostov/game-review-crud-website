@@ -35,7 +35,7 @@ public class GameService {
     }
 
     public void update(Game gameFromDb) {
-        Optional<Game> gameToUpdate = gameDao.findById(gameFromDb.getId());
+        Optional<Game> gameToUpdate = gameDao.findById(gameFromDb.getGameId());
         if (gameToUpdate.isPresent()) {
             gameDao.save(gameFromDb);
         } else {

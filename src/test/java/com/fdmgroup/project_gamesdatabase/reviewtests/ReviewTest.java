@@ -16,14 +16,13 @@ import javax.transaction.Transactional;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ReviewTest {
 
     @Autowired
@@ -31,14 +30,11 @@ public class ReviewTest {
 
     @BeforeEach
     void setup() {
-        Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
-        Game game = new Game("Undertale", developer);
-        User user1 = new User("steph", "steph179@gmail.com", "pwrd");
-        User user2 = new User("chris", "drysale@gmail.com", "pwrd");
-        Review review1 = new Review(game, user1, 5, "rly good :^)");
-        Review review2 = new Review(game, user2, 5, "great!!!!!");
-        reviewService.create(review1);
-        reviewService.create(review2);
+       Game gameMock = mock(Game.class);
+       User user1 = new User("lump", "lds@gmail.com", "pwrd");
+       Review review1 = new Review(gameMock, user1, 5, "rly good :^)");
+       reviewService.create(review1);
+       System.err.println(reviewService.retrieveAll());
     }
 
     @Test
@@ -47,17 +43,17 @@ public class ReviewTest {
         User user1 = new User("steph", "steph179@gmail.com", "pwrd");
         Review review = new Review(gameMock, user1, 5, "rly good :^)");
         reviewService.create(review);
-        assertTrue(review.getId() > 0);
+        assertTrue(review.getReviewId() > 0);
     }
 
     @Test
     void ReviewCanBeRetrievedFromDatabase_UsingId() {
         Review reviewFromDb = reviewService.retrieve(2).get();
-        assertTrue(reviewFromDb.getId() == 2);
+        assertTrue(reviewFromDb.getReviewId() == 2);
     }
 
     /*
-    @Test ReviewCanBeRetrievedFromDatabase_UsingUserAndGameId() {
+    @Test ReviewCanBeRetrievedFromDatabase_UsingUserAndGame() {
         User user = new User("steph", "steph179@gmail.com", "pwrd");
         Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
         Game game = new Game("Undertale", developer);
@@ -76,12 +72,12 @@ public class ReviewTest {
     @Test
     @Transactional
     void GetAverageRating_ByGameId() {
-        Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
-        Game game = new Game("Undertale", developer);
-        User user1 = new User("steph", "steph179@gmail.com", "pwrd");
-        User user2 = new User("chris", "drysale@gmail.com", "pwrd");
-        Review review1 = new Review(game, user1, 5, "rly good :^)");
-        Review review2 = new Review(game, user2, 5, "great!!!!!");
+        Developer developer = new Developer("Riot Games", "California, USA");
+        Game game = new Game("Undertale3", developer);
+        User user1 = new User("Ed", "edstew@gmail.com", "pwrd");
+        User user2 = new User("Dunkey", "donkey@gmail.com", "pwrd");
+        Review review1 = new Review(game, user1, 5, "good solid game");
+        Review review2 = new Review(game, user2, 1, "trash");
         reviewService.create(review1);
         reviewService.create(review2);
         double gameRating = reviewService.getAverageGameRating(game);
@@ -91,7 +87,7 @@ public class ReviewTest {
     @Test
     void ReviewCanBeDeleted() {
         Review reviewToDelete = reviewService.retrieve(3).get();
-        long reviewId = reviewToDelete.getId();
+        long reviewId = reviewToDelete.getReviewId();
         int numInDbBefore = reviewService.retrieveAll().size();
         reviewService.delete(reviewId);
         int numInDbAfter = reviewService.retrieveAll().size();
@@ -99,13 +95,25 @@ public class ReviewTest {
     }
 
     @Test
+    @Transactional
+    void ReviewCanBeRetrievedBy_UserAndGame() {
+        Developer developer = new Developer("Riot Games", "California, USA");
+        Game game = new Game("Undertale3", developer);
+        User user = new User("Ed", "edstew@gmail.com", "pwrd");
+        Review review1 = new Review(game, user, 5, "good solid game");
+        reviewService.create(review1);
+        assertTrue(reviewService.getByUserAndGame(user, game).isPresent());
+    }
+
+    @Test
+    @Transactional
     void RepeatedReviewsReplacePreviousReviewsInDatabase() {
         Developer developer = new Developer("Toby Fox", "Massachuesets, USA");
         Game game = new Game("Undertale", developer);
-        User user = new User("steph2", "steph2@gmail.com", "pwrd");
+        User user = new User("test99", "test99@gmail.com", "pwrd");
         Review originalReview = new Review(game, user, 3, "review...");
         reviewService.create(originalReview);
-        long originalReviewId = originalReview.getId();
+        long originalReviewId = originalReview.getReviewId();
         Review updatedReview = new Review(game, user, 5, "review...");
         reviewService.create(updatedReview);
         assertTrue(reviewService.retrieve(originalReviewId).isEmpty());

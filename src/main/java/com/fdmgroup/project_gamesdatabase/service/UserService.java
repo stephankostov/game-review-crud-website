@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public void update(User userFromDb) {
-        Optional<User> userToUpdate = userDao.findById(userFromDb.getId());
+        Optional<User> userToUpdate = userDao.findById(userFromDb.getUserId());
         if (userToUpdate.isPresent()) {
             userDao.save(userFromDb);
         } else {

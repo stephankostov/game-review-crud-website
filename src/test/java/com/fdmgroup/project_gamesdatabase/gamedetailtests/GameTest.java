@@ -38,7 +38,7 @@ public class GameTest {
         Developer developer1 = new Developer("CD Projekt Red", "Warsaw, Poland");
         Game game1 = new Game("Witcher 3", developer1);
         gameService.create(game1);
-        assertTrue(game1.getId() > 0);
+        assertTrue(game1.getGameId() > 0);
     }
 
     @Test

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,13 +34,13 @@ public class UserTest {
     void UserCanBeCreated(){
         User user1 = new User("user1", "user@usermail.com", "userpassword");
         userService.create(user1);
-        assertTrue(user1.getId() > 0);
+        assertTrue(user1.getUserId() > 0);
     }
 
     @Test
     void UserCanBeRetrievedFromDatabase_UsingId() {
         User userFromDb = userService.retrieve(2).get();
-        assertTrue(userFromDb.getId() == 2);
+        assertTrue(userFromDb.getUserId() == 2);
     }
 
     @Test
@@ -62,13 +63,13 @@ public class UserTest {
     @Test
     void AUserCanBeRetrieved_UsingUsernameAndPassword(){
         User userFromDb = userService.getByUsernameAndPassword("testuser", "password").get();
-        assertTrue(userFromDb.getId() > 0);
+        assertTrue(userFromDb.getUserId() > 0);
     }
 
     @Test
     void UserCanBeDeleted() {
         User userToDelete = userService.retrieve(3).get();
-        long userId = userToDelete.getId();
+        long userId = userToDelete.getUserId();
         int numInDbBefore = userService.retrieveAll().size();
         userService.delete(userId);
         int numInDbAfter = userService.retrieveAll().size();

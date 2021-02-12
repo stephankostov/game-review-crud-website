@@ -4,13 +4,12 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "userId"}))
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_gen")
     @SequenceGenerator(name = "review_gen", sequenceName = "REVIEW_SEQ", allocationSize = 1)
-    private long id;
+    private long reviewId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "gameId")
@@ -36,12 +35,12 @@ public class Review {
     public Review() {
     }
 
-    public long getId() {
-        return id;
+    public long getReviewId() {
+        return reviewId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setReviewId(long id) {
+        this.reviewId = id;
     }
 
     public User getUser() {
@@ -81,18 +80,18 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review1 = (Review) o;
-        return id == review1.id && rating == review1.rating && user.equals(review1.user) && game.equals(review1.game) && Objects.equals(review, review1.review);
+        return reviewId == review1.reviewId && rating == review1.rating && user.equals(review1.user) && game.equals(review1.game) && Objects.equals(review, review1.review);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, game, rating, review);
+        return Objects.hash(reviewId, user, game, rating, review);
     }
 
     @Override
     public String toString() {
         return "Review{" +
-                "id=" + id +
+                "id=" + reviewId +
                 ", user=" + user +
                 ", game=" + game +
                 ", rating=" + rating +

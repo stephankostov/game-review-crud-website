@@ -35,7 +35,7 @@ public class DeveloperService {
     }
 
     public void update(Developer developerFromDb) {
-        Optional<Developer> developerToUpdate = developerDao.findById(developerFromDb.getId());
+        Optional<Developer> developerToUpdate = developerDao.findById(developerFromDb.getDeveloperId());
         if (developerToUpdate.isPresent()) {
             developerDao.save(developerFromDb);
         } else {

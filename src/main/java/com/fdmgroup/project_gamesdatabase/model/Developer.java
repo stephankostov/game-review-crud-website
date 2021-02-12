@@ -9,7 +9,7 @@ public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "developer_gen")
     @SequenceGenerator(name = "developer_gen", sequenceName = "DEVELOPER_SEQ", allocationSize = 1)
-    private long id;
+    private long developerId;
 
     @Column
     private String name;
@@ -26,12 +26,12 @@ public class Developer {
 
     }
 
-    public long getId() {
-        return id;
+    public long getDeveloperId() {
+        return developerId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDeveloperId(long id) {
+        this.developerId = id;
     }
 
     public String getName() {
@@ -55,19 +55,19 @@ public class Developer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Developer developer = (Developer) o;
-        return id == developer.id && name.equals(developer.name) && address.equals(developer.address);
+        return developerId == developer.developerId && name.equals(developer.name) && address.equals(developer.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address);
+        return Objects.hash(developerId, name, address);
     }
 
 
     @Override
     public String toString() {
         return "Developer{" +
-                "id=" + id +
+                "id=" + developerId +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 '}';

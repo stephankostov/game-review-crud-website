@@ -2,13 +2,13 @@ package com.fdmgroup.project_gamesdatabase.gamedetailtests;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.service.DeveloperService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,13 +34,13 @@ public class DeveloperTest {
     void DeveloperCanBeCreated(){
         Developer developer1 = new Developer("Riot Games", "LA, California, USA");
         developerService.create(developer1);
-        assertTrue(developer1.getId() > 0);
+        assertTrue(developer1.getDeveloperId() > 0);
     }
 
     @Test
     void DeveloperCanBeRetrievedFromDatabase_UsingId() {
         Developer retrievedDeveloper = developerService.retrieve(1).get();
-        assertTrue(retrievedDeveloper.getId() == 1);
+        assertTrue(retrievedDeveloper.getDeveloperId() == 1);
     }
 
     @Test
@@ -61,9 +61,10 @@ public class DeveloperTest {
     }
 
     @Test
+    @Transactional
     void DeveloperCanBeDeleted() {
         Developer developerToDelete = developerService.retrieve(3).get();
-        long developerId = developerToDelete.getId();
+        long developerId = developerToDelete.getDeveloperId();
         int numInDbBefore = developerService.retrieveAll().size();
         developerService.delete(developerId);
         int numInDbAfter = developerService.retrieveAll().size();

@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -23,12 +21,12 @@ public class ImportSqlTest {
     @Test
     void ImportClassWithNoRelationships() {
         User userFromDb = userService.retrieve(1).get();
-        assertEquals(userFromDb.getId(), 1);
+        assertEquals(userFromDb.getUserId(), 1);
     }
 
     @Test
     void ImportClassWithRelationships() {
         Game gameFromDb = gameService.retrieve(1).get();
-        assertEquals(gameFromDb.getId(), 1);
+        assertEquals(gameFromDb.getGameId(), 1);
     }
 }
