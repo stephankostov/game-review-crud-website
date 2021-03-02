@@ -1,4 +1,4 @@
-package com.fdmgroup.project_gamesdatabase.usertests;
+package com.fdmgroup.project_gamesdatabase.user;
 
 import com.fdmgroup.project_gamesdatabase.model.User;
 import com.fdmgroup.project_gamesdatabase.service.UserService;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

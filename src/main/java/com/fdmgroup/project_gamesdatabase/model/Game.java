@@ -1,6 +1,7 @@
 package com.fdmgroup.project_gamesdatabase.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,9 +15,18 @@ public class Game {
     @Column
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     @JoinColumn(name = "developerId")
     private Developer developer;
+
+    @OneToMany(
+            mappedBy = "game",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch=FetchType.EAGER
+    )
+    private List<Review> reviewList;
+
 
     public Game(String name, Developer developer) {
         this.name = name;

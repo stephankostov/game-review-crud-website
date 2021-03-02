@@ -1,4 +1,4 @@
-package com.fdmgroup.project_gamesdatabase.sqlimporttest;
+package com.fdmgroup.project_gamesdatabase.imports;
 
 import com.fdmgroup.project_gamesdatabase.model.Game;
 import com.fdmgroup.project_gamesdatabase.model.User;

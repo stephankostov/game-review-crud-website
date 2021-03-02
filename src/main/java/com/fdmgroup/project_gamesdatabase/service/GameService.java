@@ -34,13 +34,14 @@ public class GameService {
     public List<Game> retrieveAll() { return gameDao.findAll();
     }
 
-    public void update(Game gameFromDb) {
+    public Optional<Game> update(Game gameFromDb) {
         Optional<Game> gameToUpdate = gameDao.findById(gameFromDb.getGameId());
         if (gameToUpdate.isPresent()) {
             gameDao.save(gameFromDb);
         } else {
             LOGGER.info("No such game in database");
         }
+        return gameToUpdate;
     }
 
     public boolean delete(long gameId) {

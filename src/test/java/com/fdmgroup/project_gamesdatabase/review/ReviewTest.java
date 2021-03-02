@@ -1,4 +1,4 @@
-package com.fdmgroup.project_gamesdatabase.reviewtests;
+package com.fdmgroup.project_gamesdatabase.review;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.model.Game;

@@ -1,4 +1,4 @@
-package com.fdmgroup.project_gamesdatabase.gamedetailtests;
+package com.fdmgroup.project_gamesdatabase.game;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.service.DeveloperService;
