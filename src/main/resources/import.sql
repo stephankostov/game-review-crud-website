@@ -16,6 +16,6 @@ insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_
 insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 1, 3, 5, 'best game EVER');
 insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 3, 1, 5, 'gr8');
 insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 2, 3, 5, 'review..');
-insert into Review (review_id, game_id, user_id, rating, review) values (REVIEW_SEQ.nextval, 4, 3, 3, 'review');
+
 
 

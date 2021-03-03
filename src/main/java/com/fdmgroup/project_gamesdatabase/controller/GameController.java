@@ -49,16 +49,17 @@ public class GameController {
         return ResponseEntity.ok(allGames);
     }
 
-    @GetMapping("createGame")
-    public ResponseEntity<Void> createTodo(@RequestBody Game game,
-                                           BindingResult bindingResult) {
-        gameService.create(game);
+    @PostMapping("create")
+    public ResponseEntity<Void> createGame(@RequestBody Game game) {
+        Long gameId = gameService.create(game);
+        System.err.println("game.getGameId() : " + (gameService.retrieve(game.getGameId())));
+        System.err.println("gameId : " + (gameService.retrieve(gameId)));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(game.getGameId()).toUri();
+                .buildAndExpand(gameId).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping("update/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<Game> updateGame(@PathVariable("id") Long gameId,
                                            @RequestBody Game game) {
         Optional<Game> updatedGame = gameService.update(game);
@@ -68,8 +69,7 @@ public class GameController {
         return ResponseEntity.ok(updatedGame.get());
     }
 
-    @Transactional
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<HttpStatus> deleteGame(@PathVariable("id") long id){
         gameService.delete(id);
         LOGGER.info("Game deleted");

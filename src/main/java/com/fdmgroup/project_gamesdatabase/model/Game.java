@@ -22,10 +22,10 @@ public class Game {
     @OneToMany(
             mappedBy = "game",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch=FetchType.EAGER
+            orphanRemoval = false,
+            fetch=FetchType.LAZY
     )
-    private List<Review> reviewList;
+    private List<Review> reviewList; // selfnote: getters and setters here break http methods
 
 
     public Game(String name, Developer developer) {
@@ -65,7 +65,9 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return gameId == game.gameId && name.equals(game.name) && developer.equals(game.developer);
+        return gameId == game.gameId &&
+                name.equals(game.name) &&
+                developer.equals(game.developer);
     }
 
     @Override

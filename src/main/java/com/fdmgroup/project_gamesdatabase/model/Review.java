@@ -11,11 +11,11 @@ public class Review {
     @SequenceGenerator(name = "review_gen", sequenceName = "REVIEW_SEQ", allocationSize = 1)
     private long reviewId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "gameId")
     private Game game;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "userId")
     private User user;
 

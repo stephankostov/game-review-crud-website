@@ -24,7 +24,6 @@ public class GameTest {
     @Autowired
     private GameService gameService;
 
-
     private Developer developer;
     private Game game1;
     private Game game2;
@@ -32,7 +31,6 @@ public class GameTest {
     @BeforeEach
     void setup() {
         developer = new Developer("Riot Games", "California, USA");
-        //developerService.create(developer);
         game1 = new Game("League of Legends", developer);
         game2 = new Game("Valorant", developer);
         gameService.create(game1);
@@ -72,7 +70,7 @@ public class GameTest {
     @Test
     void GameCanBeDeleted() {
         int numInDbBefore = gameService.retrieveAll().size();
-        gameService.delete(3);
+        gameService.delete(1);
         int numInDbAfter = gameService.retrieveAll().size();
         assertNotEquals(numInDbBefore, numInDbAfter);
     }

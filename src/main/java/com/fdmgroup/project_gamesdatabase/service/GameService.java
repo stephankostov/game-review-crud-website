@@ -23,8 +23,9 @@ public class GameService {
         this.gameDao = gameDao;
     }
 
-    public void create(Game game) {
+    public long create(Game game) {
         gameDao.save(game);
+        return game.getGameId();
     }
 
     public Optional<Game> retrieve(long gameId) {
