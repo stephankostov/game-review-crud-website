@@ -3,6 +3,7 @@ package com.fdmgroup.project_gamesdatabase.model;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.OptionalDouble;
 
 @Entity
 public class Game {
@@ -21,12 +22,11 @@ public class Game {
 
     @OneToMany(
             mappedBy = "game",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.REMOVE,
             orphanRemoval = false,
-            fetch=FetchType.LAZY
+            fetch=FetchType.EAGER
     )
     private List<Review> reviewList; // selfnote: getters and setters here break http methods
-
 
     public Game(String name, Developer developer) {
         this.name = name;
@@ -34,6 +34,12 @@ public class Game {
     }
 
     public Game() {
+    }
+
+    public OptionalDouble getAvgRating() {
+        return reviewList.stream()
+                .mapToDouble(review -> review.getRating())
+                .average();
     }
 
     public long getGameId() {

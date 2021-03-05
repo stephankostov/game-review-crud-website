@@ -18,9 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -76,6 +75,17 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("gameRatings")
+    public ResponseEntity<Map<Game,OptionalDouble>> getGameRatings() {
+
+        // 1
+        Map<Game, OptionalDouble> averageRatingsAndGames = gameService.retrieveAll().stream()
+                .collect(Collectors.toMap(Function.identity(),game -> game.getAvgRating()));
+        return ResponseEntity.ok(averageRatingsAndGames);
+
+    }
+    /*
+
     // todo find out best practice for this;
     // look into steams
     public static void addAllGameRatingsToModel(ModelAndView modelAndView, GameService gameService, ReviewService reviewService) {
@@ -94,6 +104,7 @@ public class GameController {
         LOGGER.info("game ratings passed into model");
         return modelAndView;
     }
+    */
 
 
 

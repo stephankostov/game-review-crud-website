@@ -98,5 +98,12 @@ public class GameAPITest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void gameRatings() throws Exception {
+        mockMvc.perform(get(GAME_API_ROOT + "gameRatings"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
 
 }

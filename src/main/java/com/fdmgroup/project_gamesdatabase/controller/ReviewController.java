@@ -40,13 +40,14 @@ public class ReviewController {
         return model;
     }
 
+    /*
     @PostMapping("/ReviewGameSubmit")
     public ModelAndView reviewGameSubmit(@ModelAttribute("review") Review review) {
         reviewService.create(review);
         ModelAndView model = new ModelAndView("forward://WEB-INF/allGames.jsp");
         GameController.addAllGameRatingsToModel(model, gameService, reviewService);
         return model;
-    }
+    } */
 
 
 }
