@@ -23,8 +23,9 @@ public class DeveloperService {
         this.developerDao = developerDao;
     }
 
-    public void create(Developer developer) {
+    public long create(Developer developer) {
             developerDao.save(developer);
+            return developer.getDeveloperId();
     }
 
     public Optional<Developer> retrieve(long developerId) {
@@ -34,13 +35,13 @@ public class DeveloperService {
     public List<Developer> retrieveAll() { return developerDao.findAll();
     }
 
-    public void update(Developer developerFromDb) {
+    public Optional<Developer> update(Developer developerFromDb) {
         Optional<Developer> developerToUpdate = developerDao.findById(developerFromDb.getDeveloperId());
         if (developerToUpdate.isPresent()) {
             developerDao.save(developerFromDb);
         } else {
             LOGGER.info("No such developer in database");
-        }
+        } return developerToUpdate;
     }
 
     public boolean delete(long developerId) {

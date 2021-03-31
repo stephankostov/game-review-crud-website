@@ -1,53 +1,69 @@
 package com.fdmgroup.project_gamesdatabase.controller;
 
 import com.fdmgroup.project_gamesdatabase.model.Review;
-import com.fdmgroup.project_gamesdatabase.service.GameService;
 import com.fdmgroup.project_gamesdatabase.service.ReviewService;
-import com.fdmgroup.project_gamesdatabase.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
+@RequestMapping("/api/reviews/")
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private UserService userService;
 
-    @GetMapping("/Game/ReviewGame/{gameId}")
-    public ModelAndView reviewGame(@PathVariable("gameId")Long gameId) {
-        ModelAndView model = new ModelAndView("../WEB-INF/gameReview.jsp");
-        model.addObject("game", gameService.retrieve(gameId).get());
-        model.addObject("allUsers", userService.retrieveAll());
-        List<Integer> ratingOptions = new ArrayList<>();
-        ratingOptions.add(1);
-        ratingOptions.add(2);
-        ratingOptions.add(3);
-        ratingOptions.add(4);
-        ratingOptions.add(5);
-        model.addObject("ratingOptions", ratingOptions);
-        return model;
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    @GetMapping("get/{reviewId}")
+    public ResponseEntity<Review> getReview(@PathVariable("reviewId") Long reviewId) {
+        Optional<Review> review = reviewService.retrieve(reviewId);
+        if (review.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(review.get());
     }
 
-    /*
-    @PostMapping("/ReviewGameSubmit")
-    public ModelAndView reviewGameSubmit(@ModelAttribute("review") Review review) {
-        reviewService.create(review);
-        ModelAndView model = new ModelAndView("forward://WEB-INF/allGames.jsp");
-        GameController.addAllGameRatingsToModel(model, gameService, reviewService);
-        return model;
-    } */
+    @GetMapping("all")
+    public ResponseEntity<List<Review>> allReviews() {
+        List<Review> allReviews = reviewService.retrieveAll();
+        return ResponseEntity.ok(allReviews);
+    }
 
+    @PostMapping("create")
+    public ResponseEntity<Void> createReview(@RequestBody Review review) {
+        Long reviewId = reviewService.create(review);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(reviewId).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<Review> updateReview(@PathVariable("id") Long reviewId,
+                                                     @RequestBody Review review) {
+        Optional<Review> updatedReview = reviewService.update(review);
+        if (updatedReview.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedReview.get());
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<HttpStatus> deleteReview(@PathVariable("id") long id) {
+        reviewService.delete(id);
+        LOGGER.info("Review deleted");
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 }
+
+    

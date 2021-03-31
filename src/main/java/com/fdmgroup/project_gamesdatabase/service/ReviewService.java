@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +25,17 @@ public class ReviewService {
     @Autowired
     private ReviewDao reviewDao;
 
+    @Autowired
+    private GameService gameService;
+
     public ReviewService(ReviewDao reviewDao) {
         this.reviewDao = reviewDao;
     }
 
-    public void create(Review review) {
+    public long create(Review review) {
         reviewDao.save(review);
+        return review.getReviewId();
     }
-
-
 
     public Optional<Review> retrieve(long reviewId) {
         return reviewDao.findById(reviewId);
@@ -41,13 +44,14 @@ public class ReviewService {
     public List<Review> retrieveAll() { return reviewDao.findAll();
     }
 
-    public void update(Review reviewFromDb) {
+    public Optional<Review> update(Review reviewFromDb) {
         Optional<Review> reviewToUpdate = reviewDao.findById(reviewFromDb.getReviewId());
         if (reviewToUpdate.isPresent()) {
             reviewDao.save(reviewFromDb);
         } else {
             LOGGER.info("No such review in database");
         }
+        return reviewToUpdate;
     }
 
     public boolean delete(long reviewId) {
@@ -55,7 +59,8 @@ public class ReviewService {
         return true;
     }
 
-    public double getAverageGameRating(Game game){
+    public double getAverageGameRating(Long gameId){
+        Game game = gameService.retrieve(gameId).get();
         Optional<Double> avgRating = reviewDao.getAverageGameRating(game);
         if (avgRating.isPresent()) {
             return avgRating.get();

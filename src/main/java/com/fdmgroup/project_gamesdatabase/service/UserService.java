@@ -25,13 +25,14 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void create(User user) {
+    public long create(User user) {
         String email = user.getEmail();
         if (userDao.getByEmail(email).size() > 0) {
            LOGGER.info("User email already registered");
         } else {
             userDao.save(user);
        }
+        return user.getUserId();
     }
 
     public Optional<User> retrieve(long userId) {
@@ -41,13 +42,14 @@ public class UserService {
     public List<User> retrieveAll() { return userDao.findAll();
     }
 
-    public void update(User userFromDb) {
+    public Optional<User> update(User userFromDb) {
         Optional<User> userToUpdate = userDao.findById(userFromDb.getUserId());
         if (userToUpdate.isPresent()) {
             userDao.save(userFromDb);
         } else {
             LOGGER.info("No such user in database");
         }
+        return userToUpdate;
     }
 
     public boolean delete(long userId) {

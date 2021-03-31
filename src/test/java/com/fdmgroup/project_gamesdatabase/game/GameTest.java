@@ -2,6 +2,7 @@ package com.fdmgroup.project_gamesdatabase.game;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.model.Game;
+import com.fdmgroup.project_gamesdatabase.model.Language;
 import com.fdmgroup.project_gamesdatabase.service.DeveloperService;
 import com.fdmgroup.project_gamesdatabase.service.GameService;
 
@@ -25,22 +26,25 @@ public class GameTest {
     private GameService gameService;
 
     private Developer developer;
+    private Language language;
     private Game game1;
     private Game game2;
 
     @BeforeEach
     void setup() {
         developer = new Developer("Riot Games", "California, USA");
-        game1 = new Game("League of Legends", developer);
-        game2 = new Game("Valorant", developer);
+        language = new Language("Python");
+        game1 = new Game("League of Legends", developer, language);
+        game2 = new Game("Valorant", developer, language);
         gameService.create(game1);
         gameService.create(game2);
     }
 
     @Test
     void GameCanBeCreated() {
+        Language language = new Language("Python");
         Developer developer = new Developer("CD Projekt Red", "Warsaw, Poland");
-        Game game = new Game("Witcher 3", developer);
+        Game game = new Game("Witcher 3", developer, language);
         gameService.create(game);
         assertTrue(game.getGameId() > 0);
     }

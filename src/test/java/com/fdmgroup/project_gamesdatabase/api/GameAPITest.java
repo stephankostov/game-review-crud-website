@@ -3,6 +3,7 @@ package com.fdmgroup.project_gamesdatabase.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.project_gamesdatabase.model.Developer;
 import com.fdmgroup.project_gamesdatabase.model.Game;
+import com.fdmgroup.project_gamesdatabase.model.Language;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class GameAPITest {
     @Autowired
     ObjectMapper objectMapper;
 
-    final static String GAME_API_ROOT = "/api/game/";
+    final static String GAME_API_ROOT = "/api/games/";
 
     @BeforeEach
     void setup() {
@@ -39,10 +40,9 @@ public class GameAPITest {
 
     @Test
     void retrieveAllGames() throws Exception {
-        String expectedResult = "[{\"gameId\":1,\"name\":\"Among Us\",\"developer\":{\"developerId\":1,\"name\":\"InnerSloth\",\"address\":\"Washington, USA\"}},{\"gameId\":2,\"name\":\"Minecraft\",\"developer\":{\"developerId\":2,\"name\":\"Mojang\",\"address\":\"Stockholm, Sweden\"}},{\"gameId\":3,\"name\":\"Witcher 3\",\"developer\":{\"developerId\":3,\"name\":\"CD Projekt Red\",\"address\":\"Warsaw, Poland\"}},{\"gameId\":4,\"name\":\"Undertale\",\"developer\":{\"developerId\":4,\"name\":\"Toby Fox\",\"address\":\"Massachusetts, USA\"}},{\"gameId\":5,\"name\":\"League of Legends\",\"developer\":{\"developerId\":5,\"name\":\"Riot Games\",\"address\":\"California, USA\"}}]";
+        String expectedResult = "[{\"gameId\":1,\"name\":\"Among Us\",\"language\":{\"languageId\":2,\"name\":\"C++\"},\"developer\":{\"developerId\":1,\"name\":\"InnerSloth\",\"address\":\"Washington, USA\"},\"avgRating\":4.5},{\"gameId\":2,\"name\":\"Minecraft\",\"language\":{\"languageId\":1,\"name\":\"Java\"},\"developer\":{\"developerId\":2,\"name\":\"Mojang\",\"address\":\"Stockholm, Sweden\"},\"avgRating\":5.0},{\"gameId\":3,\"name\":\"Witcher 3\",\"language\":{\"languageId\":2,\"name\":\"C++\"},\"developer\":{\"developerId\":3,\"name\":\"CD Projekt Red\",\"address\":\"Warsaw, Poland\"},\"avgRating\":5.0},{\"gameId\":4,\"name\":\"Undertale\",\"language\":{\"languageId\":3,\"name\":\"GameMaker\"},\"developer\":{\"developerId\":4,\"name\":\"Toby Fox\",\"address\":\"Massachusetts, USA\"},\"avgRating\":4.0},{\"gameId\":5,\"name\":\"League of Legends\",\"language\":{\"languageId\":2,\"name\":\"C++\"},\"developer\":{\"developerId\":4,\"name\":\"Toby Fox\",\"address\":\"Massachusetts, USA\"},\"avgRating\":3.0},{\"gameId\":6,\"name\":\"League of Legends\",\"language\":{\"languageId\":4,\"name\":\"C\"},\"developer\":{\"developerId\":6,\"name\":\"Riot Games\",\"address\":\"California, USA\"},\"avgRating\":null}]";
         ResultActions mvcResult = mockMvc.perform(get(GAME_API_ROOT + "all"))
                 .andExpect(status().isOk());
-
         String actualResult = mvcResult.andReturn().getResponse().getContentAsString();
         assertEquals(expectedResult, actualResult);
     }
@@ -66,8 +66,9 @@ public class GameAPITest {
 
     @Test
     void addNewGame() throws Exception {
+        Language language = new Language("C");
         Developer developer = new Developer("Riot Games", "California, USA");
-        Game game = new Game("League of Legends", developer);
+        Game game = new Game("League of Legends", developer, language);
         mockMvc.perform(post(GAME_API_ROOT + "create")
                     .contentType("application/json")
                     .content(objectMapper.writeValueAsString(game)))
@@ -98,12 +99,12 @@ public class GameAPITest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void gameRatings() throws Exception {
-        mockMvc.perform(get(GAME_API_ROOT + "gameRatings"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void gameRatings() throws Exception {
+//        mockMvc.perform(get(GAME_API_ROOT + "gameRatings"))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//    }
 
 
 }

@@ -1,9 +1,6 @@
 package com.fdmgroup.project_gamesdatabase.review;
 
-import com.fdmgroup.project_gamesdatabase.model.Developer;
-import com.fdmgroup.project_gamesdatabase.model.Game;
-import com.fdmgroup.project_gamesdatabase.model.Review;
-import com.fdmgroup.project_gamesdatabase.model.User;
+import com.fdmgroup.project_gamesdatabase.model.*;
 import com.fdmgroup.project_gamesdatabase.service.ReviewService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,15 +68,16 @@ public class ReviewTest {
     @Test
     @Transactional
     void GetAverageRating_ByGame() {
+        Language language = new Language("Python");
         Developer developer = new Developer("Riot Games", "California, USA");
-        Game game = new Game("League of Legends", developer);
+        Game game = new Game("League of Legends", developer, language);
         User user1 = new User("Ed", "edstew@gmail.com", "pwrd");
         User user2 = new User("Dunkey", "donkey@gmail.com", "pwrd");
         Review review1 = new Review(game, user1, 5, "good solid game");
         Review review2 = new Review(game, user2, 1, ":,(");
         reviewService.create(review1);
         reviewService.create(review2);
-        double gameRating = reviewService.getAverageGameRating(game);
+        double gameRating = reviewService.getAverageGameRating(game.getGameId());
         assertTrue(gameRating == (review1.getRating()+review2.getRating())/2);
     }
 
@@ -97,7 +95,8 @@ public class ReviewTest {
     @Transactional
     void ReviewCanBeRetrievedBy_UserAndGame() {
         Developer developer = new Developer("Riot Games", "California, USA");
-        Game game = new Game("League of Legends", developer);
+        Language language = new Language("Python");
+        Game game = new Game("League of Legends", developer, language);
         User user = new User("Ed", "edstew@gmail.com", "pwrd");
         Review review1 = new Review(game, user, 5, "good solid game");
         reviewService.create(review1);
@@ -108,7 +107,8 @@ public class ReviewTest {
     @Transactional
     void RepeatedReviewsReplacePreviousReviewsInDatabase() {
         Developer developer = new Developer("Riot Games", "California, USA");
-        Game game = new Game("League of Legends", developer);
+        Language language = new Language("Python");
+        Game game = new Game("League of Legends", developer, language);
         User user = new User("Ed", "edstew@gmail.com", "pwrd");
         Review originalReview = new Review(game, user, 3, "Not great");
         reviewService.create(originalReview);

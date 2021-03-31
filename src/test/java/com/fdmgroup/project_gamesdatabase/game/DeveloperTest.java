@@ -1,6 +1,7 @@
 package com.fdmgroup.project_gamesdatabase.game;
 
 import com.fdmgroup.project_gamesdatabase.model.Developer;
+import com.fdmgroup.project_gamesdatabase.model.Game;
 import com.fdmgroup.project_gamesdatabase.service.DeveloperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

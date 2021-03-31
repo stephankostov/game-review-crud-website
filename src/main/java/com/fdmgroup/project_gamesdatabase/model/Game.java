@@ -16,6 +16,10 @@ public class Game {
     @Column
     private String name;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "languageId")
+    private Language language;
+
     @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     @JoinColumn(name = "developerId")
     private Developer developer;
@@ -26,20 +30,25 @@ public class Game {
             orphanRemoval = false,
             fetch=FetchType.EAGER
     )
-    private List<Review> reviewList; // selfnote: getters and setters here break http methods
+    private List<Review> reviewList;
 
-    public Game(String name, Developer developer) {
+    public Game(String name, Developer developer, Language language) {
         this.name = name;
         this.developer = developer;
+        this.language = language;
     }
 
     public Game() {
     }
 
     public OptionalDouble getAvgRating() {
-        return reviewList.stream()
-                .mapToDouble(review -> review.getRating())
-                .average();
+        if (reviewList == null) {
+            return null;
+        } else {
+            return reviewList.stream()
+                    .mapToDouble(review -> review.getRating())
+                    .average();
+        }
     }
 
     public long getGameId() {
@@ -64,6 +73,14 @@ public class Game {
 
     public void setDeveloper(Developer developer) {
         this.developer = developer;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     @Override
